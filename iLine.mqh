@@ -173,6 +173,20 @@ public:
 };
 
 
+enum EnHarmonic {
+   Unknown=0,
+   Gartley=1,
+   Crab=2,
+   DeepCrab=3,
+   Bat=4,
+   Butterfly=5,
+   Shark=6,
+   Cypher=7,
+   ThreeDrives=8,
+   FiveZero=9
+};
+
+
 class HarmonicPattern
 {
    CPnt m_xPnt;
@@ -180,6 +194,7 @@ class HarmonicPattern
    CPnt m_bPnt;
    CPnt m_cPnt;
    CPnt m_dPnt;
+   EnHarmonic m_type;
    string m_name;
    uint m_color;
 
@@ -203,13 +218,14 @@ public:
    ulong m_instanceId;
    
 public:
-   HarmonicPattern(string name, int direction)
+   HarmonicPattern(EnHarmonic type, int direction)
       : m_instanceId(0)
-      , m_name(name)
+      , m_type(type)
       , m_direction(direction)
    {
       static ulong sm_counter=0;
       m_instanceId = ++sm_counter;
+      m_name = EnumToString(type);
       
       m_xaName   = StringFormat("L-XA-(%d)", m_instanceId);
       m_xatt = StringFormat("%s (XA)", m_name );
@@ -243,6 +259,8 @@ public:
    { }
    
    bool IsBullish() {return m_direction>0; }
+   
+   EnHarmonic Type() { return m_type; }
    
    void A(const CPnt &pnt) { m_aPnt = pnt;}
    CPnt* A(){ return &m_aPnt; }
