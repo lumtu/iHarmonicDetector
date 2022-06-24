@@ -7,19 +7,19 @@ public:
                        const datetime &_t2, const int &_x2, double &_y2, 
                        color _clr=clrDarkCyan, bool _isDot=false)
     {
-      iLine l;
-      l.x1  = _x1;
-      l.y1  = _y1;
-      l.t1  = _t1;
+      iLine line;
+      line.x1  = _x1;
+      line.y1  = _y1;
+      line.t1  = _t1;
 
-      l.x2  = _x2;
-      l.y2  = _y2;
-      l.t2  = _t2;
+      line.x2  = _x2;
+      line.y2  = _y2;
+      line.t2  = _t2;
 
-      l.clr = _clr;
-      l.isDot = _isDot;
+      line.clr = _clr;
+      line.isDot = _isDot;
 
-      return l;
+      return line;
     }
     
 protected:
@@ -214,6 +214,9 @@ class HarmonicPattern
    string m_bdtt;
    
    int m_direction;
+   
+   bool m_isNew;
+   bool m_isModified;
 public:
    ulong m_instanceId;
    
@@ -222,6 +225,8 @@ public:
       : m_instanceId(0)
       , m_type(type)
       , m_direction(direction)
+      , m_isModified(true)
+      , m_isNew(true)
    {
       static ulong sm_counter=0;
       m_instanceId = ++sm_counter;
@@ -258,23 +263,27 @@ public:
    ~HarmonicPattern()
    { }
    
+   bool IsNew() { bool res = m_isNew; m_isNew=false; return res; }
+   bool IsModified() const { return m_isModified; }
+   void Modified(bool val=true) { m_isModified = val; }
+   
    bool IsBullish() {return m_direction>0; }
    
    EnHarmonic Type() { return m_type; }
    
-   void A(const CPnt &pnt) { m_aPnt = pnt;}
+   void A(const CPnt &pnt) { m_aPnt = pnt; Modified(); }
    CPnt* A(){ return &m_aPnt; }
 
-   void B(const CPnt &pnt) { m_bPnt = pnt;}
+   void B(const CPnt &pnt) { m_bPnt = pnt; Modified(); }
    CPnt* B(){ return &m_bPnt; }
 
-   void C(const CPnt &pnt) { m_cPnt = pnt;}
+   void C(const CPnt &pnt) { m_cPnt = pnt; Modified(); }
    CPnt* C(){ return &m_cPnt; }
 
-   void D(const CPnt &pnt) { m_dPnt = pnt;}
+   void D(const CPnt &pnt) { m_dPnt = pnt; Modified(); }
    CPnt* D(){ return &m_dPnt; }
 
-   void X(const CPnt &pnt) { m_xPnt = pnt;}
+   void X(const CPnt &pnt) { m_xPnt = pnt; Modified(); }
    CPnt* X(){ return &m_xPnt; }
    
    void Color(uint clr) { m_color = clr; }
