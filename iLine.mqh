@@ -183,7 +183,9 @@ enum EnHarmonic {
    Shark=6,
    Cypher=7,
    ThreeDrives=8,
-   FiveZero=9
+   FiveZero=9,
+   
+   DoublePattern=20
 };
 
 
